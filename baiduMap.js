@@ -321,7 +321,9 @@
                         var marker = opts.markers[i];
                         var pt = getBMapPoint(marker.latitude, marker.longitude, opts.projection);
                         var marker2;
+                        var markerW = 19;
                         if (marker.icon) {
+                            markerW = marker.width;
                             var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height));
                             marker2 = new BMap.Marker(pt, {
                                 icon: icon
@@ -330,6 +332,10 @@
                             marker2 = new BMap.Marker(pt);
                         }
 
+                        if (marker.label) {
+                            var label = new BMap.Label(marker.label,{offset:new BMap.Size(markerW+1,-10)});
+                            marker2.setLabel(label);
+                        }
                         // add marker to the map
                         map.addOverlay(marker2);
                         previousMarkers.push(marker2);
