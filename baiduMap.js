@@ -286,6 +286,14 @@
                     //add overview map control
                     map.addControl(new BMap.OverviewMapControl());
                 }
+                if (opts.trafficCtrl) {
+                    // add traffic control, require include both:
+                    // http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.js
+                    // http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css
+                    var ctrl = new BMapLib.TrafficControl();
+                    map.addControl(ctrl);
+                    ctrl.setAnchor(opts.trafficCtrl.anchor ? opts.trafficCtrl.anchor : BMAP_ANCHOR_TOP_RIGHT);
+                }
                 if (opts.enableScrollWheelZoom) {
                     //enable scroll wheel zoom
                     map.enableScrollWheelZoom();
