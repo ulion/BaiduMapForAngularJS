@@ -361,11 +361,12 @@
                 mark();
 
                 $scope.$watch('options.center', function(newValue, oldValue) {
-
                     opts = $scope.options;
-                    map.centerAndZoom(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection), opts.zoom);
-                    mark();
+                    map.panTo(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection));
+                }, true);
 
+                $scope.$watch('options.zoom', function(newValue, oldValue) {
+                    map.setZoom($scope.options.zoom);
                 }, true);
 
                 $scope.$watch('options.markers', function(newValue, oldValue) {
