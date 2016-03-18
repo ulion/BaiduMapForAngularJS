@@ -330,9 +330,18 @@
                         var pt = getBMapPoint(marker.latitude, marker.longitude, opts.projection);
                         var marker2;
                         var markerW = 19;
+                        var markerH = 25;
                         if (marker.icon) {
-                            markerW = marker.width;
-                            var icon = new BMap.Icon(marker.icon, new BMap.Size(marker.width, marker.height));
+                            markerW = marker.icon.width || marker.icon.w || markerW;
+                            markerH = marker.icon.height || marker.icon.h || markerH;
+                            var iconOptions = {};
+                            if (marker.icon.anchor) {
+                                iconOptions.anchor = new BMap.Size(marker.icon.anchor.x, marker.icon.anchor.y);
+                            }
+                            if (marker.icon.imageOffset) {
+                                iconOptions.imageOffset = new BMap.Size(marker.icon.imageOffset.x, marker.icon.imageOffset.y);
+                            }
+                            var icon = new BMap.Icon(marker.icon.url || marker.icon, new BMap.Size(markerW, markerH), iconOptions);
                             marker2 = new BMap.Marker(pt, {
                                 icon: icon
                             });
@@ -341,7 +350,15 @@
                         }
 
                         if (marker.label) {
-                            var label = new BMap.Label(marker.label,{offset:new BMap.Size(markerW+1,-10)});
+                            var labelOffsetX = markerW+1;
+                            var labelOffsetY = -10;
+                            if (marker.label.offset) {
+                                labelOffsetX = marker.label.offset.x;
+                                labelOffsetY = marker.label.offset.y;
+                            }
+                            var label = new BMap.Label(marker.label.content || marker.label, {
+                                offset: new BMap.Size(labelOffsetX, labelOffsetY)
+                            });
                             marker2.setLabel(label);
                         }
                         // add marker to the map
