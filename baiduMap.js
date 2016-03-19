@@ -308,6 +308,7 @@
                 //create markers
 
                 var previousMarkers = [];
+                var previousPoints = [];
 
                 var openInfoWindow = function(infoWin) {
                     return function() {
@@ -324,10 +325,12 @@
                         map.removeOverlay(previousMarkers[i]);
                     }
                     previousMarkers.length = 0;
+                    previousPoints = [];
 
                     for (i = 0; i < opts.markers.length; i++) {
                         var marker = opts.markers[i];
                         var pt = getBMapPoint(marker.latitude, marker.longitude, opts.projection);
+                        previousPoints.push(pt);
                         var marker2;
                         var markerW = 19;
                         var markerH = 25;
@@ -379,7 +382,12 @@
 
                 $scope.$watch('options.center', function(newValue, oldValue) {
                     opts = $scope.options;
-                    map.panTo(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection));
+                    if (newValue == 'auto') {
+                        var viewPort = map.getViewport(previousPoints)
+                        map.centerAndZoom(viewPort.center, viewPort.zoom);
+                    }
+                    else
+                        map.panTo(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection));
                 }, true);
 
                 $scope.$watch('options.zoom', function(newValue, oldValue) {
