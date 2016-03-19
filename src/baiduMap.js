@@ -382,12 +382,7 @@
 
                 $scope.$watch('options.center', function(newValue, oldValue) {
                     opts = $scope.options;
-                    if (newValue == 'auto') {
-                        var viewPort = map.getViewport(previousPoints)
-                        map.centerAndZoom(viewPort.center, viewPort.zoom);
-                    }
-                    else
-                        map.panTo(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection));
+                    map.panTo(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection));
                 }, true);
 
                 $scope.$watch('options.zoom', function(newValue, oldValue) {
@@ -396,6 +391,14 @@
 
                 $scope.$watch('options.markers', function(newValue, oldValue) {
                     mark();
+                }, true);
+
+                $scope.$watch('options.viewport', function(newValue, oldValue) {
+                    if (newValue) {
+                        opts = $scope.options;
+                        var viewPort = map.getViewport(previousPoints, newValue || {});
+                        map.centerAndZoom(viewPort.center, viewPort.zoom);
+                    }
                 }, true);
 
             },
