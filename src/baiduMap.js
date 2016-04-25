@@ -272,6 +272,12 @@
                 // create map instance
                 var map = new BMap.Map(element.find('div')[0]);
 
+                if (opts.eventHandlers) {
+                  for (var event in opts.eventHandlers) {
+                    map.addEventListener(event, opts.eventHandlers[event]);
+                  }
+                }
+
                 // init map, set central location and zoom level
                 map.centerAndZoom(getBMapPoint(opts.center.latitude, opts.center.longitude, opts.projection), opts.zoom);
                 if (opts.navCtrl) {
